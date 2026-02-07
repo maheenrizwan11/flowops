@@ -1,5 +1,16 @@
 WORKFLOW 1: Request Creation and Submission
-Assigned to:
+1. User opens FlowOps web app.
+2. User logs in as Requester.
+3. System verifies Requester role.
+4. User fills request details (title, description, category).
+5. User saves request as Draft.
+6. System stores request with Draft status.
+7. User submits request.
+8. System validates fields.
+9. System updates status to Submitted.
+10. System records submission in audit log.
+11. Request becomes visible to Reviewers.
+Assigned to: Juweriya Nasir
 
 WORKFLOW 2: Review and Decision Process
 1. Reviewer logs in. 
