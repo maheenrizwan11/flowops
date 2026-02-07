@@ -5,4 +5,15 @@ WORKFLOW 2: Review and Decision Process
 Assigned to:
 
 WORKFLOW 3: Request Reassignment and Escalation
-Assigned to:
+1. Reviewer logs in to FlowOps.
+2. System verifies Reviewer role.
+3. Reviewer views the list of Submitted or Under Review requests.
+4. Reviewer identifies a request that requires escalation or reassignment (e.g., missing info, high priority, or complex dispute).
+5. Reviewer selects a new assignee (another Reviewer or Admin) and reassigns the request.
+6. System updates the request status to Escalated and records the reassignment action in audit logs.
+7. The new assignee receives a notification about the reassigned request.
+8. New assignee reviews the request and continues processing (approval or rejection).
+9. System logs all reassignment and escalation actions with user, role, timestamp, and request ID.
+10. The escalation history is visible in the request’s audit trail for compliance and monitoring purposes.
+Assigned to: Maheen Rizwan
+
