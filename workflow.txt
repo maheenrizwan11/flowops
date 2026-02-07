@@ -2,7 +2,17 @@ WORKFLOW 1: Request Creation and Submission
 Assigned to:
 
 WORKFLOW 2: Review and Decision Process
-Assigned to:
+1. Reviewer logs in. 
+2. System verifies Reviewer role. 
+3. Reviewer views Submitted requests. 
+4. Reviewer opens a request. 
+5. Reviewer changes status to Under Review. 
+6. System logs action. 
+7. Reviewer approves or rejects request. 
+8. System updates status to Approved or Rejected. 
+9. System records decision in audit logs. 
+10. Request is marked Closed.
+Assigned to: Maheen Rizwan
 
 WORKFLOW 3: Request Reassignment and Escalation
 Assigned to:
