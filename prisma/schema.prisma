@@ -1,0 +1,151 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum Role {
+  ADMIN
+  REVIEWER
+  REQUESTER
+}
+
+enum RequestStatus {
+  DRAFT
+  SUBMITTED
+  UNDER_REVIEW
+  ESCALATED
+  APPROVED
+  REJECTED
+  CLOSED
+}
+
+enum AuditAction {
+  REQUEST_CREATED
+  REQUEST_SUBMITTED
+  REVIEW_STARTED
+  REQUEST_APPROVED
+  REQUEST_REJECTED
+  REQUEST_ESCALATED
+  MEMBER_ADDED
+  MEMBER_REMOVED
+  ROLE_CHANGED
+}
+
+enum NotificationType {
+  REQUEST_SUBMITTED
+  STATUS_UPDATED
+  REQUEST_ASSIGNED
+  REQUEST_ESCALATED
+}
+
+model Organization {
+  id        String   @id @default(cuid())
+  name      String
+  slug      String   @unique
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  members  OrganizationMember[]
+  requests Request[]
+}
+
+model User {
+  id           String   @id @default(cuid())
+  email        String   @unique
+  passwordHash String
+  name         String
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  memberships      OrganizationMember[]
+  requestsCreated  Request[]      @relation("RequestCreatedBy")
+  requestsAssigned Request[]      @relation("RequestAssignedTo")
+  auditLogs        AuditLog[]
+  notifications    Notification[]
+  statusChanges    StatusHistory[]
+}
+
+model OrganizationMember {
+  id             String   @id @default(cuid())
+  role           Role
+  joinedAt       DateTime @default(now())
+
+  organization   Organization @relation(fields: [organizationId], references: [id])
+  organizationId String
+  user           User         @relation(fields: [userId], references: [id])
+  userId         String
+
+  @@unique([organizationId, userId])
+}
+
+model Request {
+  id           String        @id @default(cuid())
+  title        String
+  description  String
+  category     String
+  status       RequestStatus @default(DRAFT)
+  createdAt    DateTime      @default(now())
+  updatedAt    DateTime      @updatedAt
+  submittedAt  DateTime?
+  closedAt     DateTime?
+
+  organization   Organization @relation(fields: [organizationId], references: [id])
+  organizationId String
+  createdBy      User         @relation("RequestCreatedBy", fields: [createdById], references: [id])
+  createdById    String
+  assignedTo     User?        @relation("RequestAssignedTo", fields: [assignedToId], references: [id])
+  assignedToId   String?
+
+  auditLogs     AuditLog[]
+  notifications Notification[]
+  statusHistory StatusHistory[]
+}
+
+model StatusHistory {
+  id          String         @id @default(cuid())
+  fromStatus  RequestStatus?
+  toStatus    RequestStatus
+  note        String?
+  changedAt   DateTime       @default(now())
+
+  request     Request @relation(fields: [requestId], references: [id])
+  requestId   String
+  changedBy   User    @relation(fields: [changedById], references: [id])
+  changedById String
+}
+
+model AuditLog {
+  id        String      @id @default(cuid())
+  action    AuditAction
+  metadata  Json?
+  createdAt DateTime    @default(now())
+
+  request   Request? @relation(fields: [requestId], references: [id])
+  requestId String?
+  user      User     @relation(fields: [userId], references: [id])
+  userId    String
+}
+
+model Notification {
+  id        String           @id @default(cuid())
+  type      NotificationType
+  message   String
+  read      Boolean          @default(false)
+  createdAt DateTime         @default(now())
+
+  user      User     @relation(fields: [userId], references: [id])
+  userId    String
+  request   Request? @relation(fields: [requestId], references: [id])
+  requestId String?
+}
+
