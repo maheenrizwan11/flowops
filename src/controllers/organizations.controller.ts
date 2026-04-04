@@ -1,5 +1,5 @@
 import { Response } from 'express'
-import { AuthRequest } from '../types/auth.types'  // import this
+import { AuthRequest } from '../types/auth.types' 
 import { prisma } from '../lib/prisma'
 import { z } from 'zod'
 
