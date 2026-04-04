@@ -1,7 +1,8 @@
-import { Request, Response, NextFunction } from 'express'
+import { Response, NextFunction } from 'express'
 import { prisma } from '../lib/prisma'
+import { AuthRequest } from '../types/auth.types'
 
-export async function requireOrgMember(req: Request, res: Response, next: NextFunction) {
+export async function requireOrgMember(req: AuthRequest, res: Response, next: NextFunction) {
   const { orgId } = req.params
   const userId = req.user!.id
 
