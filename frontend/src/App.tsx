@@ -12,6 +12,7 @@ import { RequesterDashboard } from './pages/requester/RequesterDashboard'
 import { DraftListPage } from './pages/requester/DraftListPage'
 import { RequestCreatePage } from './pages/requester/RequestCreatePage'
 import { RequestEditPage } from './pages/requester/RequestEditPage'
+import { RequestDetailPage } from './pages/requester/RequestDetailPage'
 
 
 function HomeRedirect() {
@@ -40,7 +41,7 @@ export default function App() {
             <Route path="/orgs/:orgId/requests/drafts" element={<RoleGate allow={['REQUESTER']}><DraftListPage /></RoleGate>} />
             <Route path="/orgs/:orgId/requests/new" element={<RoleGate allow={['REQUESTER']}><RequestCreatePage /></RoleGate>} />
             <Route path="/orgs/:orgId/requests/:id/edit" element={<RoleGate allow={['REQUESTER']}><RequestEditPage /></RoleGate>} />
-            <Route path="/orgs/:orgId/requests/:id" element={<RoleGate allow={['REQUESTER','REVIEWER','ADMIN']}><Stub name="RequestDetailPage"/></RoleGate>} />
+            <Route path="/orgs/:orgId/requests/:id" element={<RoleGate allow={['REQUESTER','REVIEWER','ADMIN']}><RequestDetailPage /></RoleGate>} />
 
             <Route path="/orgs/:orgId/reviewer/dashboard" element={<RoleGate allow={['REVIEWER','ADMIN']}><Stub name="ReviewerDashboard"/></RoleGate>} />
             <Route path="/orgs/:orgId/reviewer/queue" element={<RoleGate allow={['REVIEWER','ADMIN']}><Stub name="ReviewerQueuePage"/></RoleGate>} />
