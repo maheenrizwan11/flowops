@@ -8,6 +8,10 @@ const Stub = ({ name }: { name: string }) => <div className="text-sm text-slate-
 
 import { LoginPage } from './pages/auth/LoginPage'
 import { RegisterPage } from './pages/auth/RegisterPage'
+import { RequesterDashboard } from './pages/requester/RequesterDashboard'
+import { DraftListPage } from './pages/requester/DraftListPage'
+import { RequestCreatePage } from './pages/requester/RequestCreatePage'
+import { RequestEditPage } from './pages/requester/RequestEditPage'
 
 
 function HomeRedirect() {
@@ -32,10 +36,10 @@ export default function App() {
             <Route path="/settings/password" element={<Stub name="ChangePasswordPage" />} />
             <Route path="/notifications" element={<Stub name="NotificationsPage" />} />
 
-            <Route path="/orgs/:orgId/dashboard" element={<RoleGate allow={['REQUESTER']}><Stub name="RequesterDashboard"/></RoleGate>} />
-            <Route path="/orgs/:orgId/requests/drafts" element={<RoleGate allow={['REQUESTER']}><Stub name="DraftListPage"/></RoleGate>} />
-            <Route path="/orgs/:orgId/requests/new" element={<RoleGate allow={['REQUESTER']}><Stub name="RequestCreatePage"/></RoleGate>} />
-            <Route path="/orgs/:orgId/requests/:id/edit" element={<RoleGate allow={['REQUESTER']}><Stub name="RequestEditPage"/></RoleGate>} />
+            <Route path="/orgs/:orgId/dashboard" element={<RoleGate allow={['REQUESTER']}><RequesterDashboard /></RoleGate>} />
+            <Route path="/orgs/:orgId/requests/drafts" element={<RoleGate allow={['REQUESTER']}><DraftListPage /></RoleGate>} />
+            <Route path="/orgs/:orgId/requests/new" element={<RoleGate allow={['REQUESTER']}><RequestCreatePage /></RoleGate>} />
+            <Route path="/orgs/:orgId/requests/:id/edit" element={<RoleGate allow={['REQUESTER']}><RequestEditPage /></RoleGate>} />
             <Route path="/orgs/:orgId/requests/:id" element={<RoleGate allow={['REQUESTER','REVIEWER','ADMIN']}><Stub name="RequestDetailPage"/></RoleGate>} />
 
             <Route path="/orgs/:orgId/reviewer/dashboard" element={<RoleGate allow={['REVIEWER','ADMIN']}><Stub name="ReviewerDashboard"/></RoleGate>} />
