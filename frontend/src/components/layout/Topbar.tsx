@@ -1,7 +1,8 @@
 import { useAuth } from '../../contexts/AuthContext'
 import { Link, useNavigate } from 'react-router-dom'
 import { Button } from '../ui/Button'
-import { LogOut, Bell, KeyRound } from 'lucide-react'
+import { LogOut, KeyRound } from 'lucide-react'
+import { NotificationBell } from '../notifications/NotificationBell'
 
 export function Topbar() {
   const { user, currentOrg, logout, setCurrentOrg } = useAuth()
@@ -26,7 +27,7 @@ export function Topbar() {
         )}
       </div>
       <div className="flex items-center gap-2">
-        <Link to="/notifications" className="rounded p-2 text-slate-600 hover:bg-slate-100"><Bell size={18}/></Link>
+        <NotificationBell />
         <Link to="/settings/password" className="rounded p-2 text-slate-600 hover:bg-slate-100"><KeyRound size={18}/></Link>
         <span className="text-sm text-slate-600">{user?.name}</span>
         <Button variant="ghost" size="sm" onClick={() => { logout(); nav('/login') }}>
