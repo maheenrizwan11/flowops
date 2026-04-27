@@ -6,7 +6,8 @@ import { router } from './routes/index'
 
 export const app = express()
 
-app.use(cors())
+const allowed = process.env.FRONTEND_URL?.split(',').map((s) => s.trim()) ?? true
+app.use(cors({ origin: allowed, credentials: true }))
 app.use(morgan('dev'))
 app.use(express.json())
 
@@ -14,5 +15,5 @@ app.get('/', (req, res) => {
   res.send('API running')
 })
 
-app.use('/api', router) 
+app.use('/api', router)
 app.use(errorHandler)
