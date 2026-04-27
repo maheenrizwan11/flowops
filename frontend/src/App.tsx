@@ -19,7 +19,7 @@ import { ChangePasswordPage } from './pages/auth/ChangePasswordPage'
 import { ReviewerDashboard } from './pages/reviewer/ReviewerDashboard'
 import { ReviewerQueuePage } from './pages/reviewer/ReviewerQueuePage'
 import { RequestReviewPage } from './pages/reviewer/RequestReviewPage'
-
+import { AdminDashboard } from './pages/admin/AdminDashboard'
 
 
 function HomeRedirect() {
@@ -54,7 +54,7 @@ export default function App() {
             <Route path="/orgs/:orgId/reviewer/queue" element={<RoleGate allow={['REVIEWER','ADMIN']}><ReviewerQueuePage /></RoleGate>} />
             <Route path="/orgs/:orgId/reviewer/requests/:id" element={<RoleGate allow={['REVIEWER','ADMIN']}><RequestReviewPage/></RoleGate>} />
 
-            <Route path="/orgs/:orgId/admin/dashboard" element={<RoleGate allow={['ADMIN']}><Stub name="AdminDashboard"/></RoleGate>} />
+            <Route path="/orgs/:orgId/admin/dashboard" element={<RoleGate allow={['ADMIN']}><AdminDashboard/></RoleGate>} />
             <Route path="/orgs/:orgId/admin/members" element={<RoleGate allow={['ADMIN']}><Stub name="MembersPage"/></RoleGate>} />
             <Route path="/orgs/:orgId/admin/settings" element={<RoleGate allow={['ADMIN']}><Stub name="OrgSettingsPage"/></RoleGate>} />
             <Route path="/orgs/:orgId/admin/audit" element={<RoleGate allow={['ADMIN']}><Stub name="AuditLogPage"/></RoleGate>} />

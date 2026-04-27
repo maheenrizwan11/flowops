@@ -10,6 +10,8 @@ import { StatusTimeline } from '../../components/requests/StatusTimeline'
 import { Skeleton } from '../../components/ui/Skeleton'
 import { useAuth } from '../../contexts/AuthContext'
 import type { RequestItem, StatusHistoryItem } from '../../types/api'
+import { EscalateModal } from '../../components/requests/EscalateModal'
+
 
 // Backend returns the request object directly with statusHistory inlined — confirmed against
 // src/controllers/requests.controller.ts:55 (getRequest)
@@ -65,7 +67,9 @@ export function RequestReviewPage() {
         <CardHeader><h2 className="font-medium">Timeline</h2></CardHeader>
         <CardBody><StatusTimeline history={data.statusHistory ?? []} /></CardBody>
       </Card>
-      {/* EscalateModal wired in M4 */}
+      {<EscalateModal open={escalateOpen} onClose={() => setEscalateOpen(false)}
+  orgId={orgId!} requestId={id!} onDone={refetch} />
+}
     </div>
   )
 }
