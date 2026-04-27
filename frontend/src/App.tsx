@@ -4,6 +4,7 @@ import { AppShell } from './components/layout/AppShell'
 import { RoleGate } from './components/layout/RoleGate'
 import { useAuth } from './contexts/AuthContext'
 
+
 const Stub = ({ name }: { name: string }) => <div className="text-sm text-slate-500">TODO: {name}</div>
 
 import { LoginPage } from './pages/auth/LoginPage'
@@ -14,6 +15,9 @@ import { RequestCreatePage } from './pages/requester/RequestCreatePage'
 import { RequestEditPage } from './pages/requester/RequestEditPage'
 import { RequestDetailPage } from './pages/requester/RequestDetailPage'
 import { NotificationsPage } from './pages/shared/NotificationsPage'
+import { ChangePasswordPage } from './pages/auth/ChangePasswordPage'
+import { ReviewerDashboard } from './pages/reviewer/ReviewerDashboard'
+import { ReviewerQueuePage } from './pages/reviewer/ReviewerQueuePage'
 
 
 function HomeRedirect() {
@@ -35,7 +39,7 @@ export default function App() {
         <Route element={<ProtectedRoute />}>
           <Route element={<AppShell />}>
             <Route path="/" element={<HomeRedirect />} />
-            <Route path="/settings/password" element={<Stub name="ChangePasswordPage" />} />
+            <Route path="/settings/password" element={<ChangePasswordPage />} />
             <Route path="/notifications" element={<NotificationsPage />} />
 
             <Route path="/orgs/:orgId/dashboard" element={<RoleGate allow={['REQUESTER']}><RequesterDashboard /></RoleGate>} />
@@ -44,8 +48,8 @@ export default function App() {
             <Route path="/orgs/:orgId/requests/:id/edit" element={<RoleGate allow={['REQUESTER']}><RequestEditPage /></RoleGate>} />
             <Route path="/orgs/:orgId/requests/:id" element={<RoleGate allow={['REQUESTER','REVIEWER','ADMIN']}><RequestDetailPage /></RoleGate>} />
 
-            <Route path="/orgs/:orgId/reviewer/dashboard" element={<RoleGate allow={['REVIEWER','ADMIN']}><Stub name="ReviewerDashboard"/></RoleGate>} />
-            <Route path="/orgs/:orgId/reviewer/queue" element={<RoleGate allow={['REVIEWER','ADMIN']}><Stub name="ReviewerQueuePage"/></RoleGate>} />
+            <Route path="/orgs/:orgId/reviewer/dashboard" element={<RoleGate allow={['REVIEWER','ADMIN']}><ReviewerDashboard /></RoleGate>} />
+            <Route path="/orgs/:orgId/reviewer/queue" element={<RoleGate allow={['REVIEWER','ADMIN']}><ReviewerQueuePage /></RoleGate>} />
             <Route path="/orgs/:orgId/reviewer/requests/:id" element={<RoleGate allow={['REVIEWER','ADMIN']}><Stub name="RequestReviewPage"/></RoleGate>} />
 
             <Route path="/orgs/:orgId/admin/dashboard" element={<RoleGate allow={['ADMIN']}><Stub name="AdminDashboard"/></RoleGate>} />
