@@ -18,6 +18,8 @@ import { NotificationsPage } from './pages/shared/NotificationsPage'
 import { ChangePasswordPage } from './pages/auth/ChangePasswordPage'
 import { ReviewerDashboard } from './pages/reviewer/ReviewerDashboard'
 import { ReviewerQueuePage } from './pages/reviewer/ReviewerQueuePage'
+import { RequestReviewPage } from './pages/reviewer/RequestReviewPage'
+
 
 
 function HomeRedirect() {
@@ -50,7 +52,7 @@ export default function App() {
 
             <Route path="/orgs/:orgId/reviewer/dashboard" element={<RoleGate allow={['REVIEWER','ADMIN']}><ReviewerDashboard /></RoleGate>} />
             <Route path="/orgs/:orgId/reviewer/queue" element={<RoleGate allow={['REVIEWER','ADMIN']}><ReviewerQueuePage /></RoleGate>} />
-            <Route path="/orgs/:orgId/reviewer/requests/:id" element={<RoleGate allow={['REVIEWER','ADMIN']}><Stub name="RequestReviewPage"/></RoleGate>} />
+            <Route path="/orgs/:orgId/reviewer/requests/:id" element={<RoleGate allow={['REVIEWER','ADMIN']}><RequestReviewPage/></RoleGate>} />
 
             <Route path="/orgs/:orgId/admin/dashboard" element={<RoleGate allow={['ADMIN']}><Stub name="AdminDashboard"/></RoleGate>} />
             <Route path="/orgs/:orgId/admin/members" element={<RoleGate allow={['ADMIN']}><Stub name="MembersPage"/></RoleGate>} />
