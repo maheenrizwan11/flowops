@@ -1,13 +1,72 @@
 # FlowOps
 
-A multi-organization workflow and request management system. Organizations can manage their own members, roles, and internal approval processes independently.
+A multi-organization workflow and request management system with role-based dashboards, in-app notifications, and a full audit trail. Organizations manage their own members, roles, and approval processes independently.
+
+> 🌐 **Live demo:** _<TODO Maheen: paste Vercel URL after deploy>_
+> 🔐 **API:** _<TODO Maheen: paste Render URL after deploy>_
+
+## Demo accounts
+
+| Role      | Email                  | Password    |
+|-----------|------------------------|-------------|
+| Admin     | admin@flowops.dev      | password123 |
+| Reviewer  | reviewer@flowops.dev   | password123 |
+| Requester | requester@flowops.dev  | password123 |
+
+## Features
+
+**Authentication & accounts**
+- Email/password registration and login (JWT-based)
+- Change password from a settings page
+- Role-aware sidebar/navigation per organization
+- Multi-organization membership with org switcher in the topbar
+
+**Workflow 1 — Request creation (Requester)**
+- Create / edit / delete draft requests
+- Submit drafts to reviewers (notifies all reviewers)
+- View per-request status timeline
+
+**Workflow 2 — Review (Reviewer)**
+- Queue of submitted requests with a status filter
+- Start review · Approve · Reject (each behind a confirmation dialog)
+- Audit trail recorded for every action
+
+**Workflow 3 — Escalation (Reviewer / Admin)**
+- Reassign in-flight reviews to another reviewer or admin with an optional reason
+- Notifies the new assignee in real time (next poll)
+
+**Notifications**
+- In-app bell with unread count, polls every 30s
+- Dropdown of latest 10 + a full notifications page
+- Mark one or mark all as read
+
+**Admin**
+- Organization overview with member count + requests-by-status bar chart
+- Add / remove members by email; change roles inline
+- Rename organization
+- Per-request audit log viewer (every state change + actor)
+
+**Polish & UX**
+- Frontend + backend form validation
+- Loading skeletons, empty states, error toasts, confirm dialogs
+- Responsive layout (mobile / tablet / desktop)
+- Protected routes + role gates on every authenticated route
+- 404 page for unknown URLs
+
+## Frameworks used
+
+**Backend** — Node.js, Express, TypeScript, Prisma ORM, PostgreSQL, JWT (`jsonwebtoken`), `bcryptjs`, Zod, CORS, Morgan.
+
+**Frontend** — React 18, Vite, TypeScript, React Router v6, Tailwind CSS (+ `@tailwindcss/forms`), `react-hot-toast` (toasts), `lucide-react` (icons), `clsx`. **No** axios, no react-query, no react-hook-form — HTTP, data fetching, and forms all use native browser APIs / native React state. Dates are formatted via the built-in `Intl.RelativeTimeFormat`.
+
+**Deployment** — Vercel (frontend) + Render (backend + managed PostgreSQL).
 
 ---
 
 ## Prerequisites
 
 - Node.js >= 18
-- PostgreSQL running locally
+- PostgreSQL running locally (or use the Render Postgres URL for the deployed setup)
 
 ---
 
@@ -58,7 +117,24 @@ Server runs on `http://localhost:3000`
 
 ---
 
+## Frontend Setup
+
+In a separate terminal:
+
+```bash
+cd frontend
+npm install
+cp .env.example .env       # default VITE_API_URL=http://localhost:3000
+npm run dev                # http://localhost:5173
+```
+
+Open `http://localhost:5173` and sign in with one of the seeded demo accounts above.
+
+---
+
 ## Environment Variables
+
+### Backend (`/.env`)
 
 | Variable | Description |
 |----------|-------------|
@@ -66,6 +142,13 @@ Server runs on `http://localhost:3000`
 | `JWT_SECRET` | Secret key used to sign JWT tokens |
 | `PORT` | Port the server listens on (default: 3000) |
 | `JWT_EXPIRES_IN` | JWT expiry duration (e.g. `7d`, `24h`) |
+| `FRONTEND_URL` | Comma-separated allowed CORS origins (e.g. `https://flowops.vercel.app`). Leave blank in dev to allow all origins. |
+
+### Frontend (`/frontend/.env`)
+
+| Variable | Description |
+|----------|-------------|
+| `VITE_API_URL` | Backend base URL (e.g. `http://localhost:3000` in dev, your Render URL in prod) |
 
 ---
 
@@ -415,3 +498,26 @@ Requires ADMIN role.
   "recentActivity": [...]
 }
 ```
+
+---
+
+## Team Contributions
+
+**Maheen Rizwan (`maheenrizwan11`)**
+- *Backend:* project scaffolding, core middleware (auth, role, org-membership), authentication routes, organizations & members CRUD, Workflow 2 (review / approve / reject), database seed, initial API documentation.
+- *Frontend:* day-1 frontend scaffold (paired with Juweriya), Login page, Register page, Change-password page, Reviewer dashboard, Reviewer queue, Request review page (start / approve / reject), Escalation modal, Admin dashboard, Members management, Org settings, Audit log viewer.
+- *Deployment:* Render configuration (Postgres + web service), Vercel project setup, CORS / env wiring.
+
+**Juweriya (`juweriya1`)**
+- *Backend:* Workflow 1 (request CRUD + submission), Workflow 3 (escalation), notifications, role-based dashboard endpoints (requester / reviewer / admin), change-password endpoint, CORS hardening (`FRONTEND_URL`-driven), `.env.example` at repo root.
+- *Frontend:* day-1 frontend scaffold (paired with Maheen — Vite, Tailwind, native fetch wrapper, `useApi` hook, AuthContext, ProtectedRoute, RoleGate, AppShell, UI primitives), Requester dashboard, Drafts list, Request create / edit / detail pages, reusable StatusTimeline component, Notifications bell + page, 404 page.
+- *Docs:* Milestone 4 README sections (Features, Frameworks Used, Frontend Setup, Demo Accounts, Team Contributions, Known Trade-offs).
+
+---
+
+## Known Trade-offs
+
+- JWT is stored in `localStorage` (XSS-readable) — acceptable for class scope; production would use HttpOnly cookies.
+- No automated test suite. The smoke-test script in this README serves as the test plan; backend Zod validation + frontend type-checking provide the safety net.
+- Render free tier sleeps the backend after inactivity; the first request after idle takes ~30s to wake up.
+
