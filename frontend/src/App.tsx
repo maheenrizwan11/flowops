@@ -53,7 +53,12 @@ export default function App() {
             <Route path="/orgs/:orgId/admin/settings" element={<RoleGate allow={['ADMIN']}><Stub name="OrgSettingsPage"/></RoleGate>} />
             <Route path="/orgs/:orgId/admin/audit" element={<RoleGate allow={['ADMIN']}><Stub name="AuditLogPage"/></RoleGate>} />
 
-            <Route path="*" element={<div className="p-6">Not found.</div>} />
+            <Route path="*" element={
+              <div className="p-8 text-center">
+                <h1 className="text-2xl font-semibold">404</h1>
+                <p className="mt-1 text-sm text-slate-500">Page not found.</p>
+              </div>
+            } />
           </Route>
         </Route>
       </Routes>
