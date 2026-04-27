@@ -13,6 +13,7 @@ import { DraftListPage } from './pages/requester/DraftListPage'
 import { RequestCreatePage } from './pages/requester/RequestCreatePage'
 import { RequestEditPage } from './pages/requester/RequestEditPage'
 import { RequestDetailPage } from './pages/requester/RequestDetailPage'
+import { NotificationsPage } from './pages/shared/NotificationsPage'
 
 
 function HomeRedirect() {
@@ -35,7 +36,7 @@ export default function App() {
           <Route element={<AppShell />}>
             <Route path="/" element={<HomeRedirect />} />
             <Route path="/settings/password" element={<Stub name="ChangePasswordPage" />} />
-            <Route path="/notifications" element={<Stub name="NotificationsPage" />} />
+            <Route path="/notifications" element={<NotificationsPage />} />
 
             <Route path="/orgs/:orgId/dashboard" element={<RoleGate allow={['REQUESTER']}><RequesterDashboard /></RoleGate>} />
             <Route path="/orgs/:orgId/requests/drafts" element={<RoleGate allow={['REQUESTER']}><DraftListPage /></RoleGate>} />
